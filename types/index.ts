@@ -1,8 +1,10 @@
-import type Meal from "../models/meal";
+
+import Meal from "../models/meal";
 
 export type RootStackParamList = {
     Categories: undefined;
     MealsOverview: {mealId: string};
+    MealDetails: Meal
     About: undefined;
     //Feed: { sort: 'latest' | 'top' } | undefined;
   };
