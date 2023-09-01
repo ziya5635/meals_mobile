@@ -1,10 +1,12 @@
-import { Text, View, Image, StyleSheet, ScrollView, useWindowDimensions } from "react-native";
+import { Text, Image, StyleSheet, ScrollView, useWindowDimensions, Button } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import type { RootStackParamList } from "../types";
 import type { RouteProp } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import ListItems from "../components/ListItems";
+import IconButton from "../components/IconButton";
+
 type MealDetailsProp = RouteProp<RootStackParamList, 'MealDetails'>;
 
 function MealDetails() {
@@ -15,9 +17,14 @@ function MealDetails() {
         isGlutenFree, isLactoseFree, isVegetarian,
         steps} = route.params;
     const navigation = useNavigation();
+
+    const onPress = useCallback(() => {
+        console.log('tapped')
+    }, []);
+
     useEffect(() => {
-        navigation.setOptions({title})
-    })
+        navigation.setOptions({title, headerRight: () => <IconButton color="white" name="star" onPress={onPress}/>})
+    }, [title, onPress])
     return (
         <ScrollView style={styles.container}>
             <Image source={{uri: imageUrl}} style={[styles.image, {width: width, height: width}]}  />
