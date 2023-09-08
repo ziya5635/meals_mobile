@@ -1,4 +1,4 @@
-import { Text, Image, StyleSheet, ScrollView, useWindowDimensions, Button } from "react-native";
+import { Text, Image, StyleSheet, ScrollView, useWindowDimensions } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import type { RootStackParamList } from "../types";
 import type { RouteProp } from "@react-navigation/native";
