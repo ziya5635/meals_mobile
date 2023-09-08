@@ -6,25 +6,29 @@ import { useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect } from "react";
 import ListItems from "../components/ListItems";
 import IconButton from "../components/IconButton";
+import { useContextSelector } from "use-context-selector";
+import { Context  } from "../store/context/context";
 
 type MealDetailsProp = RouteProp<RootStackParamList, 'MealDetails'>;
 
 function MealDetails() {
-    const {width} = useWindowDimensions();
     const route = useRoute<MealDetailsProp>();
-    const {title, duration, complexity,
+    const {title, duration, complexity, id,
          affordability, imageUrl, ingredients,
         isGlutenFree, isLactoseFree, isVegetarian,
         steps} = route.params;
+    const isFavoriteMeal = useContextSelector(Context, ({state}) => state.favoriteMeals.some((item:string) => item === id));
+    const toggle = useContextSelector(Context, ({actions}) => actions.toggle);
+    const {width} = useWindowDimensions();
     const navigation = useNavigation();
-
     const onPress = useCallback(() => {
-        console.log('tapped')
+        toggle(id)
     }, []);
 
     useEffect(() => {
-        navigation.setOptions({title, headerRight: () => <IconButton color="white" name="star" onPress={onPress}/>})
-    }, [title, onPress])
+        navigation.setOptions({title, headerRight: () => <IconButton color={isFavoriteMeal ? "white":"black"} name="star" onPress={onPress}/>})
+    }, [title, onPress, isFavoriteMeal])
+
     return (
         <ScrollView style={styles.container}>
             <Image source={{uri: imageUrl}} style={[styles.image, {width: width, height: width}]}  />

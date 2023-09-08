@@ -1,8 +1,16 @@
 
-import { Text } from "react-native";
+import { Text, View } from "react-native";
+import { useContextSelector } from "use-context-selector";
+import { Context } from "../store/context/context";
 
 function FavoriteScreen() {
-    return <Text>FavoriteScreen</Text>
+    const favorites = useContextSelector(Context, ({state}) => state.favoriteMeals);
+    
+    return (
+        <View>
+            {favorites.map((item: string) => <Text style={{color: 'white'}} key={item}>{item}</Text>)}
+        </View>
+    )
 }
 
 export default FavoriteScreen;

@@ -10,6 +10,7 @@ import type { RootStackParamList } from './types';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import FavoriteScreen from './screens/FavoriteScreen';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import ContextProvider from './store/context/context';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -27,6 +28,7 @@ function DrawerNavigator() {
 export default function App() {
   return (
     <SafeAreaView style={{flex: 1}}>
+      <ContextProvider>
       <View style={styles.container}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName='DrawerNavigator' screenOptions={{headerBackTitle: 'back', contentStyle: {backgroundColor: '#3f2f25'}, headerStyle: {backgroundColor: '#351401'}, headerTintColor: 'white'}}>
@@ -38,6 +40,7 @@ export default function App() {
         </NavigationContainer>
         <StatusBar style="light" />
       </View>
+      </ContextProvider>
     </SafeAreaView>
   );
 }
