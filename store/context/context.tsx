@@ -1,57 +1,62 @@
 import { createContext } from "use-context-selector";
-import useReduction from "use-reduction";
-import { ReactNode, Reducer } from "react";
-
+import { ReactNode } from "react";
+import { useReducer } from "react";
+//use this module
 interface StateProps {
     favoriteMeals: Array<string>,
 }
 
+enum ActionKind {
+    ADD = 'ADD',
+    REMOVE = 'REMOVE',
+    TOGGLE = 'TOGGLE'
+}
+
 interface ActionProps {
-    addToFavorites: (id: string) => void,
-    removeFromFavorites: (id: string) => void,
-    toggle: (id:string) => void
+    type: ActionKind;
+    payload: string;
 }
 
-interface Payload {
-    payload: string
-}
-
-interface Props {
+interface ProviderProps {
     children: ReactNode
 }
 
+//https://dev.to/craigaholliday/using-the-usereducer-hook-in-react-with-typescript-27m1
+
+function reducer(state: StateProps, action: ActionProps) {
+    const {type, payload} = action;
+    switch (type) {
+        case ActionKind.ADD:
+          return {
+            ...state,
+            favoriteMeals: [...state.favoriteMeals, payload]
+          };
+        case ActionKind.REMOVE:
+          return {
+            ...state,
+            favoriteMels: state.favoriteMeals.filter((item) => item !== payload),
+          };
+        case ActionKind.TOGGLE:
+            return {
+                ...state,
+                favoriteMels: [...state.favoriteMeals, payload]
+            }
+        default:
+          return state;
+      }
+}
+
 const initialState = {
-    favoriteMeals: [],
+    favoriteMeals: new Array<string>()
 }
+const stateContext = createContext({});
+const actionContext = createContext({});
 
-const initialAction = {
-    addToFavorites: (id: string) => {},
-    removeFromFavorites: (id: string) => {},
-    toggle: (id: string) => {}
-}
-
-const reducer = {
-    addToFavorites: ({favoriteMeals}:StateProps, {payload}: Payload) => {
-        return {favoriteMeals: [payload, ...favoriteMeals]};
-    },
-    removeFromFavorites: ({favoriteMeals}:StateProps, {payload}: Payload) => {
-        const filteredMeals = favoriteMeals.filter((item) => item !== payload);
-        return {favoriteMeals: filteredMeals};
-    },
-    toggle: ({favoriteMeals}:StateProps, {payload}: Payload) => {
-        return {favoriteMeals: favoriteMeals.filter((item) => item !== payload)};
-    }
-}
-
-const stateContext = createContext<StateProps>(initialState);
-const actionContext = createContext<ActionProps>(initialAction);
-
-//not fixed yet
-function ContextProvider({children}:Props) {
-    const [state, actions] = useReduction(initialState, reducer);
+function ContextProvider({children}:ProviderProps) {
+    const [state, dispatch] = useReducer(reducer, initialState)
     return (
         <stateContext.Provider value={state}>
-            <actionContext.Provider value={actions}>
+            <actionContext.Provider value={dispatch}>
                 {children}
             </actionContext.Provider>
         </stateContext.Provider >
