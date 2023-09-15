@@ -7,7 +7,7 @@ import { useCallback, useEffect } from "react";
 import ListItems from "../components/ListItems";
 import IconButton from "../components/IconButton";
 import { useContextSelector } from "use-context-selector";
-import { Context  } from "../store/context/context";
+import { Context } from "../store/context/context";
 
 type MealDetailsProp = RouteProp<RootStackParamList, 'MealDetails'>;
 
@@ -18,15 +18,15 @@ function MealDetails() {
         isGlutenFree, isLactoseFree, isVegetarian,
         steps} = route.params;
     const isFavoriteMeal = useContextSelector(Context, ({state}) => state.favoriteMeals.some((item:string) => item === id));
-    const toggle = useContextSelector(Context, ({actions}) => actions.toggle);
+    const dispatch = useContextSelector(Context, ({dispatch}) => dispatch);
     const {width} = useWindowDimensions();
     const navigation = useNavigation();
     const onPress = useCallback(() => {
-        toggle(id)
+        dispatch({payload:id, type:'TOGGLE'})
     }, []);
 
     useEffect(() => {
-        navigation.setOptions({title, headerRight: () => <IconButton color={isFavoriteMeal ? "white":"black"} name="star" onPress={onPress}/>})
+        navigation.setOptions({title, headerRight: () => <IconButton color="white" name={isFavoriteMeal ? 'star' : 'star-outline'} onPress={onPress}/>})
     }, [title, onPress, isFavoriteMeal])
 
     return (

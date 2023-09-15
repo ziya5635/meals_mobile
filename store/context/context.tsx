@@ -1,7 +1,7 @@
 import { createContext } from "use-context-selector";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { useReducer } from "react";
-//use this module
+
 interface StateProps {
     favoriteMeals: Array<string>,
 }
@@ -34,32 +34,38 @@ function reducer(state: StateProps, action: ActionProps) {
         case ActionKind.REMOVE:
           return {
             ...state,
-            favoriteMels: state.favoriteMeals.filter((item) => item !== payload),
+            favoriteMeals: state.favoriteMeals.filter((item) => item !== payload),
           };
         case ActionKind.TOGGLE:
+            if (state.favoriteMeals.some((id) => id === payload)) {
+                const favoriteMeals = state.favoriteMeals.filter((id) => id !== payload);
+                return {...state, favoriteMeals};                
+            } console.log({...state,
+                favoriteMeals: [...state.favoriteMeals, payload]})
             return {
                 ...state,
-                favoriteMels: [...state.favoriteMeals, payload]
+                favoriteMeals: [...state.favoriteMeals, payload]
             }
         default:
           return state;
       }
 }
 
+interface InitialStateType{
+    favoriteMeals: Array<string>
+}
 const initialState = {
     favoriteMeals: new Array<string>()
 }
-const stateContext = createContext({});
-const actionContext = createContext({});
+
+export const Context = createContext<{state: InitialStateType, dispatch: React.Dispatch<any>}>({state: initialState, dispatch: () => null});
 
 function ContextProvider({children}:ProviderProps) {
     const [state, dispatch] = useReducer(reducer, initialState)
     return (
-        <stateContext.Provider value={state}>
-            <actionContext.Provider value={dispatch}>
+        <Context.Provider value={{state, dispatch}}>
                 {children}
-            </actionContext.Provider>
-        </stateContext.Provider >
+        </Context.Provider >
     )
 }
 
