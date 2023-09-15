@@ -9,7 +9,6 @@ function MealItem( props: Meal) {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const {title, imageUrl, affordability, complexity, duration } = props;
     const onPress = () => {
-        console.log(imageUrl);
         navigation.navigate('MealDetails', {...props});    
     }
     return (

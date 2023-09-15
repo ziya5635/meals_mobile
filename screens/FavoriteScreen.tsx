@@ -1,15 +1,13 @@
 
-import { Text, View } from "react-native";
 import { useContextSelector } from "use-context-selector";
 import { Context } from "../store/context/context";
+import ListMeals from "../components/ListMeals";
+import { MEALS } from "../data/dummy-data";
 
 function FavoriteScreen() {
-    const favorites = useContextSelector(Context, ({state}) => state.favoriteMeals);
-    return (
-        <View>
-            {favorites.map((item: string) => <Text style={{color: 'white'}} key={item}>{item}</Text>)}
-        </View>
-    )
+    const favoriteMealsIds = useContextSelector(Context, ({state}) => state.favoriteMeals);
+    const favoriteMeals = MEALS.filter(meal => favoriteMealsIds.includes(meal.id));
+    return <ListMeals meals={favoriteMeals} />
 }
 
 export default FavoriteScreen;

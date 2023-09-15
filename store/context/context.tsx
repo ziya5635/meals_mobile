@@ -40,8 +40,7 @@ function reducer(state: StateProps, action: ActionProps) {
             if (state.favoriteMeals.some((id) => id === payload)) {
                 const favoriteMeals = state.favoriteMeals.filter((id) => id !== payload);
                 return {...state, favoriteMeals};                
-            } console.log({...state,
-                favoriteMeals: [...state.favoriteMeals, payload]})
+            } 
             return {
                 ...state,
                 favoriteMeals: [...state.favoriteMeals, payload]
