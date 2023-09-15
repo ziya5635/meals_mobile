@@ -4,10 +4,10 @@ import type { RootStackParamList } from "../types";
 import type { RouteProp } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect } from "react";
-import ListItems from "../components/ListItems";
 import IconButton from "../components/IconButton";
 import { useContextSelector } from "use-context-selector";
 import { Context } from "../store/context/context";
+import MealRecipe from "../components/MealRecipe";
 
 type MealDetailsProp = RouteProp<RootStackParamList, 'MealDetails'>;
 
@@ -34,8 +34,8 @@ function MealDetails() {
             <Image source={{uri: imageUrl}} style={[styles.image, {width: width, height: width}]}  />
             <Text style={styles.title}>{title}</Text>
             <Text style={{textAlign: 'center', color: 'white'}}>{`${duration}m  ${complexity.toUpperCase()}  ${affordability.toUpperCase()}`}</Text>
-            <ListItems title="Ingredients" textitems={ingredients} />
-            <ListItems title="Steps" textitems={steps} />
+            <MealRecipe title="Ingredients" textitems={ingredients} />
+            <MealRecipe title="Steps" textitems={steps} />
         </ScrollView>
     )
 }

@@ -5,7 +5,7 @@ interface Props{
     textitems: string[],
 }
 
-function ListItems(props: Props) {
+function MealRecipe(props: Props) {
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
@@ -16,7 +16,7 @@ function ListItems(props: Props) {
     )
 }
 
-export default ListItems;
+export default MealRecipe;
 
 const styles = StyleSheet.create({
     container: {
